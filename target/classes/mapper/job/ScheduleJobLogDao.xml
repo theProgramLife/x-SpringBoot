@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.job.dao.ScheduleJobLogDao">
+	<select id="queryObject" resultType="com.suke.czx.modules.job.entity.ScheduleJobLogEntity" >
+		select * from schedule_job_log where log_id = #{value}
+	</select> 
+
+	<select id="queryList" resultType="com.suke.czx.modules.job.entity.ScheduleJobLogEntity" >
+		<include refid="OracleDialectPrefix" />
+		select * from schedule_job_log 
+		<where>
+			<if test="jobId != null and jobId.trim() != ''">
+				and job_id = #{jobId}
+			</if>
+		</where>
+		order by log_id desc
+		<include refid="OracleDialectSuffix" />
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from schedule_job_log 
+		<where>
+			<if test="jobId != null and jobId.trim() != ''">
+				and job_id = #{jobId}
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.suke.czx.modules.job.entity.ScheduleJobLogEntity">
+		insert into SCHEDULE_JOB_LOG
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="logId != null" >
+				LOG_ID,
+			</if>
+			<if test="jobId != null" >
+				JOB_ID,
+			</if>
+			<if test="beanName != null" >
+				BEAN_NAME,
+			</if>
+			<if test="methodName != null" >
+				METHOD_NAME,
+			</if>
+			<if test="params != null" >
+				PARAMS,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+			<if test="error != null" >
+				ERROR,
+			</if>
+			<if test="times != null" >
+				TIMES,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="logId != null" >
+				#{logId,jdbcType=DECIMAL},
+			</if>
+			<if test="jobId != null" >
+				#{jobId,jdbcType=DECIMAL},
+			</if>
+			<if test="beanName != null" >
+				#{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null" >
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+			<if test="params != null" >
+				#{params,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null" >
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test="error != null" >
+				#{error,jdbcType=VARCHAR},
+			</if>
+			<if test="times != null" >
+				#{times,jdbcType=DECIMAL},
+			</if>
+			<if test="createTime != null" >
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<sql id="OracleDialectPrefix" >
+		<if test="limitStart != null" >
+			select * from ( select row_.*, rownum rownum_ from (
+		</if>
+	</sql>
+	<sql id="OracleDialectSuffix" >
+		<if test="limitStart != null" >
+			<![CDATA[ ) row_ ) where rownum_ > #{offset} and rownum_ <= (#{limit}+#{offset}) ]]>
+		</if>
+	</sql>
+</mapper>
