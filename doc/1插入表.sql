@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     2018/9/7 10:27:05                            */
+/* Created on:     2019/2/20 16:46:54                           */
 /*==============================================================*/
 
 
@@ -114,105 +114,6 @@ drop table tb_app_update cascade constraints;
 drop index index1;
 
 drop table tb_user cascade constraints;
-
-drop sequence Sequence_schedule_job;
-
-drop sequence Sequence_schedule_job_log;
-
-drop sequence Sequence_sys_config;
-
-drop sequence Sequence_sys_log;
-
-drop sequence Sequence_sys_menu;
-
-drop sequence Sequence_sys_oss;
-
-drop sequence Sequence_sys_role;
-
-drop sequence Sequence_sys_role_menu;
-
-drop sequence Sequence_sys_user;
-
-drop sequence Sequence_sys_user_role;
-
-drop sequence Sequence_tb_user;
-
-create sequence Sequence_schedule_job
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_schedule_job_log
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_config
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_log
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_menu
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_oss
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_role
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_role_menu
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_user
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_sys_user_role
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
-
-create sequence Sequence_tb_user
-increment by 1
-start with 1
- maxvalue 99999
- minvalue 1
-order;
 
 /*==============================================================*/
 /* Table: qrtz_blob_triggers                                    */
@@ -560,12 +461,12 @@ create index idx_qrtz_t_nft_st_misfire_grp on qrtz_triggers (
 /*==============================================================*/
 create table schedule_job 
 (
-   job_id               INT                  not null,
+   job_id               NUMBER               not null,
    bean_name            VARCHAR(2000),
    method_name          VARCHAR(2000),
    params               VARCHAR(2000),
    cron_expression      VARCHAR(2000),
-   status               INT,
+   status               NUMBER,
    remark               VARCHAR(2000),
    create_time          TIMESTAMP,
    constraint PK_SCHEDULE_JOB primary key (job_id)
@@ -603,14 +504,14 @@ comment on column schedule_job.create_time is
 /*==============================================================*/
 create table schedule_job_log 
 (
-   log_id               INT                  not null,
-   job_id               INT                  not null,
+   log_id               NUMBER               not null,
+   job_id               NUMBER               not null,
    bean_name            VARCHAR(2000),
    method_name          VARCHAR(2000),
    params               VARCHAR(2000),
-   status               INT,
+   status               NUMBER,
    error                VARCHAR(2000),
-   times                INT,
+   times                NUMBER,
    create_time          TIMESTAMP,
    constraint PK_SCHEDULE_JOB_LOG primary key (log_id, job_id)
 );
@@ -650,10 +551,10 @@ comment on column schedule_job_log.create_time is
 /*==============================================================*/
 create table sys_config 
 (
-   id                   INT                  not null,
+   id                   NUMBER               not null,
    key                  VARCHAR(2000),
    value                VARCHAR(2000)        default '1',
-   status               INT,
+   status               NUMBER,
    remark               VARCHAR(2000),
    constraint PK_SYS_CONFIG primary key (id)
 );
@@ -688,12 +589,12 @@ create index key on sys_config (
 /*==============================================================*/
 create table sys_log 
 (
-   id                   INT                  not null,
+   id                   NUMBER               not null,
    username             VARCHAR(2000),
    operation            VARCHAR(2000),
    method               VARCHAR(2000),
    params               VARCHAR(2000),
-   time                 INT,
+   time                 NUMBER,
    ip                   VARCHAR(2000),
    create_date          TIMESTAMP,
    constraint PK_SYS_LOG primary key (id)
@@ -731,14 +632,14 @@ comment on column sys_log.create_date is
 /*==============================================================*/
 create table sys_menu 
 (
-   menu_id              INT                  not null,
-   parent_id            INT,
+   menu_id              NUMBER               not null,
+   parent_id            NUMBER,
    name                 VARCHAR(2000),
    url                  VARCHAR(2000),
    perms                VARCHAR(2000),
-   type                 INT,
+   type                 NUMBER,
    icon                 VARCHAR(2000),
-   order_num            INT,
+   order_num            NUMBER,
    constraint PK_SYS_MENU primary key (menu_id)
 );
 
@@ -774,7 +675,7 @@ comment on column sys_menu.order_num is
 /*==============================================================*/
 create table sys_oss 
 (
-   id                   INT                  not null,
+   id                   NUMBER               not null,
    url                  VARCHAR(2000),
    create_date          TIMESTAMP,
    constraint PK_SYS_OSS primary key (id)
@@ -797,10 +698,10 @@ comment on column sys_oss.create_date is
 /*==============================================================*/
 create table sys_role 
 (
-   role_id              INT                  not null,
+   role_id              NUMBER               not null,
    role_name            VARCHAR(2000),
    remark               VARCHAR(2000),
-   create_user_id       INT,
+   create_user_id       NUMBER,
    create_time          TIMESTAMP,
    constraint PK_SYS_ROLE primary key (role_id)
 );
@@ -828,9 +729,9 @@ comment on column sys_role.create_time is
 /*==============================================================*/
 create table sys_role_menu 
 (
-   id                   INT                  not null,
-   role_id              INT,
-   menu_id              INT,
+   id                   NUMBER               not null,
+   role_id              NUMBER,
+   menu_id              NUMBER,
    constraint PK_SYS_ROLE_MENU primary key (id)
 );
 
@@ -851,14 +752,14 @@ comment on column sys_role_menu.menu_id is
 /*==============================================================*/
 create table sys_user 
 (
-   user_id              INT                  not null,
+   user_id              NUMBER               not null,
    username             VARCHAR(2000),
    password             VARCHAR(2000),
    salt                 VARCHAR(2000),
    email                VARCHAR(2000),
    mobile               VARCHAR(2000),
-   status               INT,
-   create_user_id       INT,
+   status               NUMBER,
+   create_user_id       NUMBER,
    create_time          TIMESTAMP,
    constraint PK_SYS_USER primary key (user_id)
 );
@@ -905,9 +806,9 @@ create index username on sys_user (
 /*==============================================================*/
 create table sys_user_role 
 (
-   id                   INT                  not null,
-   user_id              INT,
-   role_id              INT,
+   id                   NUMBER               not null,
+   user_id              NUMBER,
+   role_id              NUMBER,
    constraint PK_SYS_USER_ROLE primary key (id)
 );
 
@@ -928,7 +829,7 @@ comment on column sys_user_role.role_id is
 /*==============================================================*/
 create table sys_user_token 
 (
-   user_id              INT                  not null,
+   user_id              NUMBER               not null,
    token                VARCHAR(2000)        not null,
    expire_time          TIMESTAMP,
    update_time          TIMESTAMP,
@@ -964,7 +865,7 @@ create table tb_app_update
 (
    appid                VARCHAR(2000)        not null,
    update_content       VARCHAR(2000),
-   version_code         INT,
+   version_code         NUMBER,
    version_name         VARCHAR(2000),
    url                  VARCHAR(2000),
    app_file_name        VARCHAR(2000),
@@ -1021,7 +922,7 @@ comment on column tb_app_update.upload_time is
 /*==============================================================*/
 create table tb_user 
 (
-   user_id              INT                  not null,
+   user_id              NUMBER               not null,
    username             VARCHAR(2000),
    mobile               VARCHAR(2000),
    password             VARCHAR(2000),
